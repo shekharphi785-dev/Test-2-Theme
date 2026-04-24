@@ -1,27 +1,27 @@
 /* Theme Image Mapping */
 :root,
 [data-theme="default"] {
-  --bg-image: url('background/Default.jfif');
+  --bg-image: url('Background/Default.jfif');
 }
 
 [data-theme="sunset"] {
-  --bg-image: url('background/Sunset.jfif');
+  --bg-image: url('Background/Sunset.jfif');
 }
 
 [data-theme="aurora"] {
-  --bg-image: url('background/Aurora.jfif');
+  --bg-image: url('Background/Aurora.jfif');
 }
 
 [data-theme="nebula"] {
-  --bg-image: url('background/Nebula.jfif');
+  --bg-image: url('Background/Nebula.jfif');
 }
 
 [data-theme="carbon"] {
-  --bg-image: url('background/Carbon.jfif');
+  --bg-image: url('Background/Carbon.jfif');
 }
 
 [data-theme="emerald"] {
-  --bg-image: url('background/Emb.jfif');
+  --bg-image: url('Background/Emb.jfif');
 }
 
 .bg {
