@@ -1,0 +1,79 @@
+/* Theme Image Mapping */
+:root,
+[data-theme="default"] {
+  --bg-image: url('background/Default.jfif');
+}
+
+[data-theme="sunset"] {
+  --bg-image: url('background/Sunset.jfif');
+}
+
+[data-theme="aurora"] {
+  --bg-image: url('background/Aurora.jfif');
+}
+
+[data-theme="nebula"] {
+  --bg-image: url('background/Nebula.jfif');
+}
+
+[data-theme="carbon"] {
+  --bg-image: url('background/Carbon.jfif');
+}
+
+[data-theme="emerald"] {
+  --bg-image: url('background/Emb.jfif');
+}
+
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  /* Deepest layer */
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Blur & Tone */
+.bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  /* Slightly darkened for better contrast without blur */
+  z-index: -1;
+}
+
+[data-mode="light"] .bg::before {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Sync with Light/Dark Mode */
+[data-mode="dark"] .bg {
+  filter: brightness(0.6) saturate(1.1);
+}
+
+[data-mode="light"] .bg {
+  filter: brightness(1.1) saturate(0.9);
+}
+
+/* The "Subtle Blue" Tint only for Default theme to keep other themes consistent */
+[data-mode="dark"][data-theme="default"] .bg {
+  filter: brightness(0.6) saturate(1.2);
+}
+
+[data-mode="light"][data-theme="default"] .bg {
+  filter: brightness(1.1) saturate(1.1);
+}
+
+/* Ensuring Sidebar & Header don't get lost in the background */
+.sidebar,
+.topbar {
+  backdrop-filter: blur(40px) saturate(1.2) brightness(1.1) !important;
+  -webkit-backdrop-filter: blur(40px) saturate(1.2) brightness(1.1) !important;
+  z-index: 20;
+}

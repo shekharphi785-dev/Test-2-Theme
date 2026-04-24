@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f172a" id="meta-theme-color" />
+
+  <!-- Cache-busting meta tags to prevent the browser from serving old code -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <title>Philips Support Portal</title>
+
+  <!-- Preconnect for faster font loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+
+  <!-- Direct Image Link to the requested Flaticon Favicon -->
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/9343/9343371.png" />
+  <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/9343/9343371.png" />
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/9343/9343371.png" />
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="themes.css" />
+</head>
+
+<body data-theme="default" data-mode="dark">
+
+  <div class="bg" id="bg-el">
+    <div class="bg-circle-1"></div>
+    <div class="bg-circle-2"></div>
+  </div>
+  <div class="bg-overlay"></div>
+
+  <!-- PAGE 1 — LOGIN -->
+  <main class="page active" id="page-login">
+    <div>
+      <div class="portal-title">
+        <h1 class="portal-name">Philips Support <em>Portal</em></h1>
+      </div>
+      <section class="login-card">
+        <header class="card-header">
+          <h2>Get Started</h2>
+          <p>Enter your details to access the portal</p>
+        </header>
+        <div class="l-field">
+          <label for="inp-name">Full Name</label>
+          <input type="text" id="inp-name" autocomplete="off" />
+        </div>
+        <div class="l-field">
+          <label for="inp-emp">Employee ID</label>
+          <input type="text" id="inp-emp" autocomplete="off" />
+        </div>
+        <button class="btn-continue" onclick="doLogin()">Continue &nbsp;→</button>
+      </section>
+    </div>
+  </main>
+
+  <!-- PAGE 2 — DASHBOARD -->
+  <main class="page" id="page-dashboard">
+
+    <header class="topbar">
+      <div class="topbar-brand">Philips Support Portal</div>
+
+      <div class="topbar-user">
+        <button id="theme-toggle" class="theme-btn" onclick="toggleMode()" title="Toggle Light/Dark Mode">
+          <span id="theme-icon"></span>
+        </button>
+
+        <button id="topbar-admin-btn" onclick="showPanel('admin')"
+          style="display:none;background:var(--icon-bg);border:1px solid var(--border-light);color:var(--primary);padding:6px 14px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;">Admin</button>
+
+        <div class="user-dropdown-wrapper" id="noti-wrapper">
+          <button id="noti-btn" class="theme-btn" onclick="toggleNotiMenu(event)" title="Notifications"
+            style="position:relative">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span id="noti-badge"
+              style="position:absolute;top:-2px;right:-2px;background:var(--danger-text);color:#fff;font-size:0.55rem;font-weight:bold;border-radius:50%;width:14px;height:14px;display:none;align-items:center;justify-content:center;">0</span>
+          </button>
+          <div class="user-dropdown" id="noti-dropdown" style="width:280px">
+            <div class="dropdown-header" style="display:flex;justify-content:space-between;align-items:center">
+              <span>Notifications</span>
+              <span style="cursor:pointer;color:var(--primary);text-transform:none;font-weight:600;font-size:0.7rem"
+                onclick="clearNotifications()">Clear All</span>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div id="noti-list" style="max-height:300px;overflow-y:auto">
+              <div style="padding:16px;text-align:center;font-size:0.8rem;color:var(--text-muted)">No new notifications
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="user-dropdown-wrapper">
+          <div class="user-chip" id="user-menu-btn" onclick="toggleUserMenu(event)">
+            <div class="user-avatar" id="dash-avatar">?</div>
+            <div>
+              <div class="user-name" id="dash-name">—</div>
+              <div class="user-emp" id="dash-emp">—</div>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              style="margin-left:4px; opacity:0.6">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+
+          <div class="user-dropdown" id="user-dropdown">
+            <div class="dropdown-header">Theme Color</div>
+            <div class="dropdown-item" onclick="setTheme('default')"><span class="theme-dot"
+                style="background: #3b82f6"></span> Default Blue</div>
+            <div class="dropdown-item" onclick="setTheme('sunset')"><span class="theme-dot"
+                style="background: linear-gradient(135deg, #D95E3D, #C94C74)"></span> Sunset</div>
+            <div class="dropdown-item" onclick="setTheme('aurora')"><span class="theme-dot"
+                style="background: linear-gradient(135deg, #0077A8, #009E6F)"></span> Aurora</div>
+            <div class="dropdown-item" onclick="setTheme('nebula')"><span class="theme-dot"
+                style="background: linear-gradient(135deg, #2E5CA8, #6A3FAE)"></span> Nebula</div>
+            <div class="dropdown-item" onclick="setTheme('carbon')"><span class="theme-dot"
+                style="background: linear-gradient(135deg, #E8E8E8, #707070)"></span> Carbon</div>
+            <div class="dropdown-item" onclick="setTheme('emerald')"><span class="theme-dot"
+                style="background: linear-gradient(135deg, #006D2C, #A1D99B)"></span> Emerald Grove</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item text-danger" onclick="doLogout()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              Sign Out
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="dash-body">
+      <aside class="sidebar">
+        <div class="sidebar-section">Forms</div>
+        <nav style="display:flex; flex-direction:column; flex:1;">
+          <div class="nav-item active" onclick="showPanel('escalation')" id="nav-escalation">
+            <div class="nav-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg></div>
+            <span>Escalation</span>
+          </div>
+          <div class="nav-item" onclick="showPanel('productivity')" id="nav-productivity">
+            <div class="nav-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <polyline points="2,4 12,13 22,4" />
+              </svg></div>
+            <span>Email Productivity</span>
+          </div>
+          <div class="nav-item" onclick="showPanel('cases')" id="nav-cases">
+            <div class="nav-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10 9 9 9 8 9" />
+              </svg></div>
+            <span>Case Submission</span>
+          </div>
+          <!-- ALL USERS CAN NOW SEE THE CALL BACK FORM -->
+          <div class="nav-item" onclick="showPanel('callback')" id="nav-callback">
+            <div class="nav-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                </path>
+              </svg></div>
+            <span>Call Back</span>
+          </div>
+
+          <div class="sidebar-section" style="margin-top:8px">Quick Links</div>
+          <div class="nav-item" onclick="showPanel('websites')" id="nav-websites">
+            <div class="nav-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="2" y1="12" x2="22" y2="12" />
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg></div>
+            <span>Websites</span>
+          </div>
+          <div class="nav-item" onclick="showPanel('help')" id="nav-help">
+            <div class="nav-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg></div>
+            <span>Help Support</span>
+          </div>
+        </nav>
+      </aside>
+
+      <section class="dash-content">
+
+        <!-- ESCALATION FORM -->
+        <div class="form-panel active" id="panel-escalation">
+          <header class="panel-header">
+            <div class="panel-tag">Escalation</div>
+            <h2 class="panel-title">Escalation Form</h2>
+            <div class="panel-sub">Submit and track case escalations across all support channels.</div>
+          </header>
+
+          <div class="esc-wrap">
+            <div class="esc-agent-strip">
+              <div class="esc-agent-item">
+                <label>Agent Name</label>
+                <div class="esc-agent-val auto-name-txt">—</div>
+              </div>
+              <div class="esc-agent-item">
+                <label>Employee ID</label>
+                <div class="esc-agent-val auto-emp-txt">—</div>
+              </div>
+            </div>
+
+            <form id="escalationForm">
+              <div class="esc-grid">
+                <div class="esc-section-label esc-full">Case Details</div>
+                <div class="esc-field">
+                  <label>Case Number <span class="req">*</span></label>
+                  <input type="text" id="esc-caseNumber" placeholder="e.g. CASE-20240001" required />
+                </div>
+                <div class="esc-field">
+                  <label>Workshop <span class="req">*</span></label>
+                  <input type="text" id="esc-workshop" placeholder="Workshop name or ID" required />
+                </div>
+                <div class="esc-field esc-full">
+                  <label>Case Registration Date <span class="req">*</span></label>
+                  <input type="date" id="esc-caseDate" required />
+                </div>
+
+                <hr class="esc-divider" />
+                <div class="esc-section-label esc-full">Escalation Info</div>
+                <div class="esc-field esc-full">
+                  <label>Escalation Reason <span class="req">*</span></label>
+                  <div class="esc-select-wrap">
+                    <select id="esc-escalationReason" required>
+                      <option value="" disabled selected>Select a reason</option>
+                      <option>Awaiting Consumer Confirmation</option>
+                      <option>No-Call back from service centre</option>
+                      <option>Delay in replacement approval</option>
+                      <option>False Closure</option>
+                      <option>False Cancellation</option>
+                      <option>Replacement issue</option>
+                      <option>Spare part issue</option>
+                      <option>Upcountry issue</option>
+                      <option>Local Issue</option>
+                      <option>Multiple consumer follow-ups</option>
+                      <option>Behaviour of service centre</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="esc-field esc-full">
+                  <label>Agent Remarks <span class="req">*</span></label>
+                  <textarea id="esc-agentRemarks" placeholder="Mention The Consumer Voice" required></textarea>
+                </div>
+
+                <hr class="esc-divider" />
+                <div class="esc-section-label esc-full">Case Type</div>
+                <div class="esc-field esc-full">
+                  <label>Select Case Type <span class="req">*</span></label>
+                  <div class="esc-case-type-group">
+                    <input type="radio" id="typeAvent" name="caseType" value="Avent" required />
+                    <label for="typeAvent">Avent</label>
+                    <input type="radio" id="typeQuality" name="caseType" value="Quality" />
+                    <label for="typeQuality">Quality</label>
+                    <input type="radio" id="typeSafety" name="caseType" value="Safety" />
+                    <label for="typeSafety">Safety</label>
+                  </div>
+                </div>
+
+                <div class="esc-actions">
+                  <button type="submit" class="esc-btn-submit" id="escSubmitBtn">Submit Escalation</button>
+                  <button type="button" class="esc-btn-reset" onclick="resetEscalation()">Clear</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- EMAIL PRODUCTIVITY FORM -->
+        <div class="form-panel" id="panel-productivity">
+          <header class="panel-header">
+            <div class="panel-tag">Productivity</div>
+            <h2 class="panel-title">Email Productivity Tracker</h2>
+            <div class="panel-sub">Log your email productivity entries for the Case Management System.</div>
+          </header>
+          <div class="f-card">
+            <div class="f-section-title">Session Details</div>
+            <div class="f-field-row">
+              <div>
+                <label class="f-label">Agent Name</label>
+                <input class="f-input auto-name" type="text" readonly placeholder="Auto-filled" />
+              </div>
+              <div>
+                <label class="f-label">Employee ID</label>
+                <input class="f-input auto-emp" type="text" readonly placeholder="Auto-filled" />
+              </div>
+            </div>
+            <div class="f-field" style="margin-bottom:15px">
+              <label class="f-label">Origin <span class="req">*</span></label>
+              <div class="f-radio-group">
+                <div class="f-radio-opt"><input type="radio" id="prod-web" name="prodOrigin" value="Web" /><label
+                    for="prod-web"><span class="f-radio-dot"></span>Web</label></div>
+                <div class="f-radio-opt"><input type="radio" id="prod-email" name="prodOrigin" value="Email" /><label
+                    for="prod-email"><span class="f-radio-dot"></span>Email</label></div>
+                <div class="f-radio-opt"><input type="radio" id="prod-eshop" name="prodOrigin" value="Eshop" /><label
+                    for="prod-eshop"><span class="f-radio-dot"></span>Eshop</label></div>
+              </div>
+            </div>
+            <div class="f-field-row">
+              <div>
+                <label class="f-label">Case Number <span class="req">*</span></label>
+                <input class="f-input" type="text" id="prod-case" autocomplete="off" />
+              </div>
+              <div>
+                <label class="f-label">Date <span class="req">*</span></label>
+                <input class="f-input" type="date" id="prod-date" />
+              </div>
+            </div>
+            <div class="f-field">
+              <label class="f-label">Email Address <span class="req">*</span></label>
+              <input class="f-input" type="email" id="prod-email-addr" placeholder="e.g. name@example.com"
+                autocomplete="off" />
+            </div>
+            <button class="f-btn" id="prodSubmitBtn" onclick="submitProductivity()">Submit Entry &nbsp;→</button>
+          </div>
+        </div>
+
+        <!-- CASE SUBMISSION FORM -->
+        <div class="form-panel" id="panel-cases">
+          <header class="panel-header">
+            <div class="panel-tag">Cases</div>
+            <h2 class="panel-title">Case Submission</h2>
+            <div class="panel-sub">Submit and track new support cases with full details.</div>
+          </header>
+          <div class="f-card">
+            <div class="f-section-title">Agent Information</div>
+            <div class="f-field-row">
+              <div>
+                <label class="f-label">Agent Name</label>
+                <input class="f-input auto-name" type="text" readonly placeholder="Auto-filled" />
+              </div>
+              <div>
+                <label class="f-label">Employee ID</label>
+                <input class="f-input auto-emp" type="text" readonly placeholder="Auto-filled" />
+              </div>
+            </div>
+            <div class="f-divider"></div>
+            <div class="f-section-title">Case Details</div>
+            <div class="f-field">
+              <label class="f-label">Case ID <span class="req">*</span></label>
+              <input class="f-input" type="text" id="case-id" placeholder="Enter Case ID" autocomplete="off" />
+            </div>
+            <div class="f-field">
+              <label class="f-label">Origin <span class="req">*</span></label>
+              <div class="f-select-wrap">
+                <select class="f-input f-select" id="case-origin">
+                  <option value="" disabled selected>Select origin</option>
+                  <option>Croma</option>
+                  <option>Nykaa</option>
+                  <option>Firstcry- Portal</option>
+                  <option>Firstcry- Email</option>
+                  <option>Vijay Sales</option>
+                </select>
+              </div>
+            </div>
+            <button class="f-btn" id="caseSubmitBtn" onclick="submitCase()">Submit Case &nbsp;→</button>
+          </div>
+          <div class="f-table-wrap" id="caseTableWrap" style="display:none">
+            <div class="f-table-head">
+              <span>Submitted Cases</span>
+              <span class="f-bdg" id="caseCnt">0</span>
+            </div>
+            <div id="caseTableBody">
+              <div class="f-empty">No submissions yet.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUPERVISOR CALL BACK FORM -->
+        <div class="form-panel" id="panel-callback">
+          <header class="panel-header">
+            <div class="panel-tag">Callback</div>
+            <h2 class="panel-title">Supervisor Call Back</h2>
+            <div class="panel-sub">Request a supervisor callback for a consumer.</div>
+          </header>
+          <div class="f-card">
+            <form id="callbackForm">
+              <div class="f-section-title">Agent Information</div>
+              <div class="f-field-row">
+                <div>
+                  <label class="f-label">Agent Name</label>
+                  <input class="f-input auto-name" type="text" readonly placeholder="Auto-filled" />
+                </div>
+                <div>
+                  <label class="f-label">Employee ID</label>
+                  <input class="f-input auto-emp" type="text" readonly placeholder="Auto-filled" />
+                </div>
+              </div>
+              <div class="f-divider"></div>
+
+              <div class="f-section-title">Callback Details</div>
+              <div class="f-field-row">
+                <div>
+                  <label class="f-label">Consumer Contact <span class="req">*</span></label>
+                  <input class="f-input" type="tel" id="cb-contact" placeholder="Enter contact number" required />
+                </div>
+                <div>
+                  <label class="f-label">Reference Case <span class="req">*</span></label>
+                  <input class="f-input" type="text" id="cb-case" placeholder="Case number" required />
+                </div>
+              </div>
+
+              <div class="f-field">
+                <label class="f-label">Call Back Reason <span class="req">*</span></label>
+                <textarea class="f-textarea" id="cb-reason" placeholder="Describe the reason for callback..."
+                  required></textarea>
+              </div>
+
+              <div class="f-field-row">
+                <div>
+                  <label class="f-label">Call Back Time <span class="req">*</span></label>
+                  <div class="f-select-wrap">
+                    <select class="f-input f-select" id="cb-time" required>
+                      <option value="" disabled selected>Select urgency</option>
+                      <option>&lt;24 Hours</option>
+                      <option>Same day</option>
+                      <option>Urgent call back needed</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label class="f-label">Preferred Time <span class="req">*</span></label>
+                  <input class="f-input" type="time" id="cb-pref-time" required />
+                </div>
+              </div>
+
+              <button type="submit" class="f-btn" id="cbSubmitBtn">Submit Request &nbsp;→</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- WEBSITES PANEL -->
+        <div class="form-panel" id="panel-websites">
+          <header class="panel-header">
+            <div class="panel-tag">Websites</div>
+            <h2 class="panel-title">Quick Links</h2>
+            <div class="panel-sub">Frequently used tools and resources — click any card to open.</div>
+          </header>
+          <div class="web-grid">
+            <div class="web-section-label">Login Sites</div>
+            <a href="https://login.aps1.pure.cloud/?rid=DVbq34a3NJKzZWZ3WoxZBNaGWMHGHuKKDeCfSrYQsC4#/authenticate-adv/org/philipsvoicecloudindia"
+              target="_blank" rel="noopener" class="web-card">
+              <div class="web-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 9.9a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.9a16 16 0 0 0 6 6l.89-.89a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 18.92z" />
+                </svg></div>
+              <div class="web-card-body">
+                <div class="web-card-title">Dialer</div>
+                <div class="web-card-url">login.aps1.pure.cloud</div>
+              </div>
+              <div class="web-card-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg></div>
+            </a>
+            <a href="https://philipsb2c.lightning.force.com" target="_blank" rel="noopener" class="web-card">
+              <div class="web-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                </svg></div>
+              <div class="web-card-body">
+                <div class="web-card-title">Salesforce</div>
+                <div class="web-card-url">philipsb2c.lightning.force.com</div>
+              </div>
+              <div class="web-card-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg></div>
+            </a>
+            <a href="https://mail.radmintec.com" target="_blank" rel="noopener" class="web-card">
+              <div class="web-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg></div>
+              <div class="web-card-body">
+                <div class="web-card-title">Zimbra</div>
+                <div class="web-card-url">mail.radmintec.com</div>
+              </div>
+              <div class="web-card-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg></div>
+            </a>
+            <a href="https://philips.csod.com/clientimg/philips/welcome/signoff/signoff.htm" target="_blank"
+              rel="noopener" class="web-card">
+              <div class="web-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                  <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                </svg></div>
+              <div class="web-card-body">
+                <div class="web-card-title">Corner Stone</div>
+                <div class="web-card-url">philips.csod.com</div>
+              </div>
+              <div class="web-card-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg></div>
+            </a>
+            <a href="https://hub.challengerinc.com/learn/sign_in?return_to=%2Flearn%2F" target="_blank" rel="noopener"
+              class="web-card">
+              <div class="web-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="8" r="7" />
+                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                </svg></div>
+              <div class="web-card-body">
+                <div class="web-card-title">Challenger Hub</div>
+                <div class="web-card-url">hub.challengerinc.com</div>
+              </div>
+              <div class="web-card-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg></div>
+            </a>
+
+            <div class="web-section-label">Spare Parts</div>
+            <a href="https://aalap.com/" target="_blank" rel="noopener" class="web-card">
+              <div class="web-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+                  <path d="m3.3 7 8.7 5 8.7-5" />
+                  <path d="M12 22V12" />
+                </svg></div>
+              <div class="web-card-body">
+                <div class="web-card-title">Aalap</div>
+                <div class="web-card-url">aalap.com</div>
+              </div>
+              <div class="web-card-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg></div>
+            </a>
+            <a href="https://www.sparessale.com/" target="_blank" rel="noopener" class="web-card">
+              <div class="web-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                </svg></div>
+              <div class="web-card-body">
+                <div class="web-card-title">Spares Sale</div>
+                <div class="web-card-url">sparessale.com</div>
+              </div>
+              <div class="web-card-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg></div>
+            </a>
+
+            <div class="web-section-label">Support Tools</div>
+            <a href="https://www.philips.co.in/content/B2C/en_IN/support-home/warranty/warranty-pe.html" target="_blank"
+              rel="noopener" class="web-card">
+              <div class="web-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg></div>
+              <div class="web-card-body">
+                <div class="web-card-title">Warranty Policy</div>
+                <div class="web-card-url">philips.co.in</div>
+              </div>
+              <div class="web-card-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg></div>
+            </a>
+            <a href="https://www.atyourservice.philips.com/Pages/AYSRMS/PostalCodeMapping/default.aspx" target="_blank"
+              rel="noopener" class="web-card">
+              <div class="web-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg></div>
+              <div class="web-card-body">
+                <div class="web-card-title">Pincode Matcher</div>
+                <div class="web-card-url">atyourservice.philips.com</div>
+              </div>
+              <div class="web-card-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg></div>
+            </a>
+            <a href="https://www.philips.co.in/c-w/support-home/service-and-repair" target="_blank" rel="noopener"
+              class="web-card">
+              <div class="web-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                </svg></div>
+              <div class="web-card-body">
+                <div class="web-card-title">Service Centre Locator</div>
+                <div class="web-card-url">philips.co.in</div>
+              </div>
+              <div class="web-card-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg></div>
+            </a>
+            <a href="https://tickets.brainbees.com/login" target="_blank" rel="noopener" class="web-card">
+              <div class="web-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 9a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V9Z" />
+                  <path d="M2 9V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4" />
+                  <circle cx="7" cy="13" r="1" />
+                  <circle cx="12" cy="13" r="1" />
+                  <circle cx="17" cy="13" r="1" />
+                </svg></div>
+              <div class="web-card-body">
+                <div class="web-card-title">Firstcry</div>
+                <div class="web-card-url">tickets.brainbees.com</div>
+              </div>
+              <div class="web-card-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg></div>
+            </a>
+            <a href="https://consumerhelpline.gov.in/company" target="_blank" rel="noopener" class="web-card">
+              <div class="web-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 21h18" />
+                  <path d="M3 7v1a3 3 0 0 0 6 0V7m6 0v1a3 3 0 0 0 6 0V7" />
+                  <path d="M9 7v1a3 3 0 0 0 6 0V7" />
+                  <path d="M4 21V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v17" />
+                </svg></div>
+              <div class="web-card-body">
+                <div class="web-card-title">NCH</div>
+                <div class="web-card-url">consumerhelpline.gov.in</div>
+              </div>
+              <div class="web-card-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- ADMIN PANEL -->
+        <div class="form-panel" id="panel-admin">
+          <header class="panel-header">
+            <div class="panel-tag">Admin</div>
+            <h2 class="panel-title">Authorization Manager</h2>
+            <div class="panel-sub">Manage Admin Users, Portal Users and Restricted Users — all synced to Airtable
+              instantly.</div>
+          </header>
+
+          <!-- Admin PIN gate -->
+          <div id="admin-gate" class="f-card" style="max-width:420px">
+            <div class="f-section-title">Admin Access</div>
+            <div class="f-field">
+              <label class="f-label">Admin PIN <span class="req">*</span></label>
+              <input class="f-input" type="password" id="admin-pin-input" placeholder="Enter admin PIN"
+                autocomplete="off" />
+            </div>
+            <button class="f-btn" onclick="verifyAdminPin()">Unlock &nbsp;→</button>
+            <div style="margin-top:12px;font-size:0.72rem;color:var(--text-muted);text-align:center">PIN is set by the
+              admin — contact your system admin if locked out.</div>
+          </div>
+
+          <!-- Admin dashboard -->
+          <div id="admin-dashboard" style="display:none">
+            <div class="f-card" style="margin-bottom:18px">
+              <div class="f-section-title">Change Admin PIN</div>
+              <div class="f-field-row">
+                <div>
+                  <label class="f-label">New PIN</label>
+                  <input class="f-input" type="password" id="new-pin" placeholder="Enter new PIN" />
+                </div>
+                <div>
+                  <label class="f-label">Confirm PIN</label>
+                  <input class="f-input" type="password" id="confirm-pin" placeholder="Confirm new PIN" />
+                </div>
+              </div>
+              <button class="f-btn" style="margin-top:4px" onclick="changeAdminPin()">Update PIN &nbsp;→</button>
+            </div>
+
+            <div class="f-card">
+              <div
+                style="display:flex;gap:8px;margin-bottom:20px;border-bottom:1px solid var(--border-light);padding-bottom:14px">
+                <button class="admin-tab-btn active" id="tab-btn-admins" onclick="switchAdminTab('admins')">👑 Admin
+                  Users</button>
+                <button class="admin-tab-btn" id="tab-btn-users" onclick="switchAdminTab('users')">👤 Portal
+                  Users</button>
+                <button class="admin-tab-btn" id="tab-btn-restricted" onclick="switchAdminTab('restricted')">🔒
+                  Restricted Users</button>
+                <button class="admin-tab-btn" id="tab-btn-noti" onclick="switchAdminTab('noti')">🔔
+                  Notifications</button>
+              </div>
+
+              <!-- Admins -->
+              <div id="tab-admins">
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:12px">Can log in without being in
+                  Portal Users. Can access Admin panel.</div>
+                <div class="f-field-row" style="margin-bottom:10px">
+                  <div><label class="f-label">Employee ID</label><input class="f-input" type="text" id="new-admin-id"
+                      placeholder="e.g. RM7028777" autocomplete="off" /></div>
+                  <div><label class="f-label">Name (optional)</label><input class="f-input" type="text"
+                      id="new-admin-name" placeholder="e.g. John Doe" autocomplete="off" /></div>
+                </div>
+                <button class="f-btn" style="margin-bottom:18px" onclick="addAuthorizedEmp()">Add Admin &nbsp;→</button>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                  <span style="font-size:0.8rem;color:var(--text-muted);font-weight:600">Admin Employees</span>
+                  <span id="emp-count" class="f-bdg" style="padding:2px 10px;border-radius:20px;">0</span>
+                </div>
+                <div id="emp-list" class="admin-emp-list"></div>
+                <div
+                  style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border-light);display:flex;gap:10px">
+                  <button class="admin-danger-btn" onclick="clearAllEmps()">Clear All Admins</button>
+                  <button class="admin-lock-btn" onclick="lockAdmin()">Lock Admin</button>
+                </div>
+              </div>
+
+              <!-- Portal Users -->
+              <div id="tab-users" style="display:none">
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:12px">These employees can log in to
+                  the portal. Access: Escalation &amp; Websites only.</div>
+                <div class="f-field-row" style="margin-bottom:10px">
+                  <div><label class="f-label">Employee ID</label><input class="f-input" type="text" id="new-user-id"
+                      placeholder="e.g. RM7033055" autocomplete="off" /></div>
+                  <div><label class="f-label">Name</label><input class="f-input" type="text" id="new-user-name"
+                      placeholder="e.g. Ankit Rawat" autocomplete="off" /></div>
+                </div>
+                <button class="f-btn" style="margin-bottom:18px" onclick="addPortalUser()">Add User &nbsp;→</button>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                  <span style="font-size:0.8rem;color:var(--text-muted);font-weight:600">Portal Users</span>
+                  <span id="users-count" class="f-bdg" style="padding:2px 10px;border-radius:20px;">0</span>
+                </div>
+                <div id="users-list" class="admin-emp-list"></div>
+              </div>
+
+              <!-- Restricted Users -->
+              <div id="tab-restricted" style="display:none">
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:12px">These employees also get
+                  access to Email Productivity &amp; Case Submission forms.</div>
+                <div class="f-field-row" style="margin-bottom:10px">
+                  <div><label class="f-label">Employee ID</label><input class="f-input" type="text" id="new-restr-id"
+                      placeholder="e.g. RM7032569" autocomplete="off" /></div>
+                </div>
+                <button class="f-btn" style="margin-bottom:18px" onclick="addRestrictedUser()">Add &nbsp;→</button>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                  <span style="font-size:0.8rem;color:var(--text-muted);font-weight:600">Restricted Users</span>
+                  <span id="restr-count" class="f-bdg" style="padding:2px 10px;border-radius:20px;">0</span>
+                </div>
+                <div id="restr-list" class="admin-emp-list"></div>
+              </div>
+
+              <!-- Notifications -->
+              <div id="tab-noti" style="display:none">
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:12px">Push notifications to all
+                  users currently logged in.</div>
+                <div class="f-field" style="margin-bottom:10px">
+                  <label class="f-label">Notification Message</label>
+                  <textarea class="f-textarea" id="new-noti-msg" placeholder="Type notification message here..."
+                    style="min-height:80px"></textarea>
+                </div>
+                <button class="f-btn" style="margin-bottom:18px" onclick="pushNotification()">Update
+                  &nbsp;→</button>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                  <span style="font-size:0.8rem;color:var(--text-muted);font-weight:600">Recent Notifications</span>
+                </div>
+                <div id="admin-noti-list" class="admin-emp-list"></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- HELP SUPPORT (AI CHATBOT) -->
+        <div class="form-panel" id="panel-help">
+          <header class="panel-header">
+            <div class="panel-tag">AI Support</div>
+            <h2 class="panel-title">Help Support</h2>
+            <div class="panel-sub">Get instant help from our AI productivity assistant.</div>
+          </header>
+
+          <div class="help-chat-container">
+            <div class="chatbot-header">
+              <div class="chatbot-header-info">
+                <select id="chatbot-model-select" class="chatbot-model-select" onchange="updateSelectedModel()">
+                  <option value="github:Llama-3.3-70B-Instruct">Llama 3.3 70B</option>
+                  <option value="github:gpt-4o">GPT-4o</option>
+                  <option value="github:gpt-4o-mini">GPT-4o Mini</option>
+                  <option value="github:gpt-4o">OpenAI GPT-5 (Preview)</option>
+                </select>
+              </div>
+              <button class="chatbot-action-btn" onclick="clearChatHistory()" title="Clear Chat History">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path
+                    d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2m-6 5v6m4-6v6" />
+                </svg>
+              </button>
+            </div>
+            <div class="chatbot-messages" id="chatbot-messages">
+              <div class="chatbot-welcome">
+                <div class="chatbot-welcome-icon">
+                  <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
+                </div>
+                <h3>How can I help you, <span id="chatbot-greet-name">Agent</span>?</h3>
+              </div>
+            </div>
+
+            <div class="chatbot-input-area">
+              <textarea id="chatbot-input" class="chatbot-input" placeholder="Ask me anything…" rows="1"
+                onkeydown="handleChatKey(event)" oninput="autoresizeChatInput(this)"></textarea>
+              <button class="chatbot-send-btn" id="chatbot-send-btn" onclick="sendChatMessage()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13" />
+                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <div id="portal-toast"></div>
+  <div id="esc-toast"><span id="esc-toast-icon" style="font-size:16px">✅</span><span
+      id="esc-toast-msg">Submitted!</span></div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
