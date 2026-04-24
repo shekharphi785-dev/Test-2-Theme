@@ -1,7 +1,7 @@
 /* Theme Image Mapping */
 :root,
 [data-theme="default"] {
-  --bg-image: url('Background/Default.jfif');
+  --bg-image: url('https://raw.githubusercontent.com/shekharphi785-dev/Test-2-Theme/main/Background/Default.jfif');
 }
 
 [data-theme="sunset"] {
