@@ -5,23 +5,23 @@
 }
 
 [data-theme="sunset"] {
-  --bg-image: url('Background/Sunset.jfif');
+  --bg-image: url('https://raw.githubusercontent.com/shekharphi785-dev/Test-2-Theme/main/Background/Sunset.jfif');
 }
 
 [data-theme="aurora"] {
-  --bg-image: url('Background/Aurora.jfif');
+  --bg-image: url('https://raw.githubusercontent.com/shekharphi785-dev/Test-2-Theme/main/Background/Aurora.jfif');
 }
 
 [data-theme="nebula"] {
-  --bg-image: url('Background/Nebula.jfif');
+  --bg-image: url('https://raw.githubusercontent.com/shekharphi785-dev/Test-2-Theme/main/Background/Nebula.jfif');
 }
 
 [data-theme="carbon"] {
-  --bg-image: url('Background/Carbon.jfif');
+  --bg-image: url('https://raw.githubusercontent.com/shekharphi785-dev/Test-2-Theme/main/Background/Carbon.jfif');
 }
 
 [data-theme="emerald"] {
-  --bg-image: url('Background/Emb.jfif');
+  --bg-image: url('https://raw.githubusercontent.com/shekharphi785-dev/Test-2-Theme/main/Background/Emb.jfif');
 }
 
 .bg {
